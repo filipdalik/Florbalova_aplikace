@@ -85,4 +85,3 @@ public class Match {
         return team2;
     }
 }
-}
