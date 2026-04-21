@@ -15,11 +15,11 @@ public class Player {
         this.points = 0;
     }
 
-    public void addGoals(){
+    public void addGoal(){
         goals++;
         points++;
     }
-    public void addAssists(){
+    public void addAssist(){
         assists++;
         points++;
     }
