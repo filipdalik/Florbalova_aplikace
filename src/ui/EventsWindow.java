@@ -7,7 +7,7 @@ import javax.swing.*;
 public class EventsWindow extends JFrame {
     public EventsWindow(Match match) {
         setTitle("EVENT");
-        setSize(400, 1000);
+        setSize(550, 1000);
         setLocationRelativeTo(null);
         JTextArea area = new JTextArea();
         area.setEditable(false);
