@@ -28,17 +28,17 @@ public class Match {
             score2++;
         }
         goal.addGoal();
-
         if (assist != null){
             assist.addAssist();
         }
-
         String time = getMinutes() + ":" + String.format("%02d", getSeconds());
-        String text = goal.getName() + "scored a goal";
+        String text = "Player with number #"+goal.getNumber()+" "+goal.getName() + " scored a goal";
         if (assist != null){
-            text += ", assisted " + assist.getName()+".";
+            text += ", assisted " +"#"+assist.getNumber()+" "+ assist.getName()+".";
+        } else if (assist == null) {
+            text += " without assistance.";
         }
-        text += " without assistance.";
+
         events.add(new Event(time, text));
         return true;
     }
@@ -62,11 +62,15 @@ public class Match {
         seconds++;
         for (int i = 0; i < team1.getPlayers().size(); i++) {
             Player p = team1.getPlayers().get(i);
-            p.tickPenalty();
+            if (p.getPenaltySeconds() > 0) {
+                p.tickPenalty();
+            }
         }
         for (int i = 0; i < team2.getPlayers().size(); i++) {
             Player p = team2.getPlayers().get(i);
-            p.tickPenalty();
+            if (p.getPenaltySeconds() > 0) {
+                p.tickPenalty();
+            }
         }
     }
 
