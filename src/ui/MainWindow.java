@@ -10,7 +10,7 @@ public class MainWindow extends JFrame {
     private JLabel scoreLabel;
     private JLabel timeLabel;
     private Timer timer;
-    private boolean running = true;
+    private boolean running = false;
     private Match match;
 
     public MainWindow(Match match) {
@@ -29,10 +29,14 @@ public class MainWindow extends JFrame {
         timeLabel = new JLabel("00:00", SwingConstants.CENTER);
         timeLabel.setFont(new Font("Arial", Font.BOLD, 80));
 
-        JButton goal1Button = new JButton("Goal 1");
-        JButton goal2Button = new JButton("Goal 2");
+        JButton goal1Button = new JButton("GOAL FOR TEAM 1");
+        JButton goal2Button = new JButton("GOAL FOR TEAM 2");
         JButton stopButton = new JButton("START");
-        stopButton.setSize(15,15);
+        JButton penalty = new JButton("PENALTY");
+        JButton events = new JButton("EVENTS");
+        JButton addEvent = new JButton("ADD EVENT");
+
+        stopButton.setSize(25,25);
         stopButton.setBackground(Color.RED);
         stopButton.setForeground(Color.WHITE);
         stopButton.setOpaque(true);
@@ -41,7 +45,7 @@ public class MainWindow extends JFrame {
         timer = new Timer(1000, e -> {
             if (running) {
                 match.tick();
-                updateTime();
+                updateUIData();
             }
         });
 
@@ -58,7 +62,7 @@ public class MainWindow extends JFrame {
             );
             Player asist = (Player) JOptionPane.showInputDialog(
                     this,
-                    "Choose player:",
+                    "Choose player (CANCEL = NO ASSIST):",
                     "Asist team 1",
                     JOptionPane.PLAIN_MESSAGE,
                     null,
@@ -68,7 +72,7 @@ public class MainWindow extends JFrame {
 
             if (goal != null) {
                 match.addGoal(match.getTeam1(), goal, asist);
-                updateScore();
+                updateUIData();
             }
         });
 
@@ -92,20 +96,27 @@ public class MainWindow extends JFrame {
                     null
             );
 
-            if (goal != null && asist != null) {
+            if (goal != null) {
                 match.addGoal(match.getTeam2(), goal, asist);
-                updateScore();
+                updateUIData();
             }
         });
 
         stopButton.addActionListener(e -> {
-
             running = !running;
-
             stopButton.setText(running ? "STOP" : "START");
-
             if (running) {
                 timer.start();
+            }
+        });
+
+        events.addActionListener(e -> {
+            new EventsWindow(match);
+        });
+        addEvent.addActionListener(e -> {
+            String text = JOptionPane.showInputDialog("Add event:");
+            if (text != null && !text.isEmpty()) {
+                match.addEvent(text);
             }
         });
 
@@ -113,6 +124,9 @@ public class MainWindow extends JFrame {
         buttons.add(goal1Button);
         buttons.add(goal2Button);
         buttons.add(stopButton);
+        buttons.add(penalty);
+        buttons.add(events);
+        buttons.add(addEvent);
         setLayout(new BorderLayout());
         add(scoreLabel, BorderLayout.CENTER);
         add(timeLabel, BorderLayout.NORTH);
@@ -121,16 +135,13 @@ public class MainWindow extends JFrame {
         setVisible(true);
     }
 
-    private void updateTime() {
-        timeLabel.setText(
-                String.format("%02d:%02d",
-                        match.getMinutes(),
-                        match.getSeconds()
-                )
-        );
-    }
+    private void updateUIData() {
 
-    private void updateScore() {
         scoreLabel.setText(match.getScore1() + " : " + match.getScore2());
+
+        timeLabel.setText(String.format("%02d:%02d",
+                match.getMinutes(),
+                match.getSeconds()));
+
     }
 }
