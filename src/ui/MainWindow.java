@@ -31,8 +31,7 @@ public class MainWindow extends JFrame {
 
         JButton goal1Button = new JButton("Goal 1");
         JButton goal2Button = new JButton("Goal 2");
-
-        JButton stopButton = new JButton("STOP");
+        JButton stopButton = new JButton("START");
         stopButton.setSize(15,15);
         stopButton.setBackground(Color.RED);
         stopButton.setForeground(Color.WHITE);
@@ -45,8 +44,6 @@ public class MainWindow extends JFrame {
                 updateTime();
             }
         });
-
-        timer.start();
 
 
         goal1Button.addActionListener(e -> {
@@ -65,12 +62,12 @@ public class MainWindow extends JFrame {
                     "Asist team 1",
                     JOptionPane.PLAIN_MESSAGE,
                     null,
-                    match.getTeam1().getPlayers().toArray(),
+                    match.getTeam1().getPlayers().toArray() ,
                     null
             );
 
-            if (goal != null && asist != null) {
-                match.addGoalToTeam1(goal, asist);
+            if (goal != null) {
+                match.addGoal(match.getTeam1(), goal, asist);
                 updateScore();
             }
         });
@@ -79,7 +76,7 @@ public class MainWindow extends JFrame {
             Player goal = (Player) JOptionPane.showInputDialog(
                     this,
                     "Choose player:",
-                    "Goal team 1",
+                    "Goal team 2",
                     JOptionPane.PLAIN_MESSAGE,
                     null,
                     match.getTeam2().getPlayers().toArray(),
@@ -87,8 +84,8 @@ public class MainWindow extends JFrame {
             );
             Player asist = (Player) JOptionPane.showInputDialog(
                     this,
-                    "Choose player:",
-                    "Asist team 1",
+                    "Choose player (CANCEL = NO ASSIST):",
+                    "Asist team 2",
                     JOptionPane.PLAIN_MESSAGE,
                     null,
                     match.getTeam2().getPlayers().toArray(),
@@ -96,7 +93,7 @@ public class MainWindow extends JFrame {
             );
 
             if (goal != null && asist != null) {
-                match.addGoalToTeam2(goal, asist);
+                match.addGoal(match.getTeam2(), goal, asist);
                 updateScore();
             }
         });
@@ -105,10 +102,10 @@ public class MainWindow extends JFrame {
 
             running = !running;
 
+            stopButton.setText(running ? "STOP" : "START");
+
             if (running) {
-                stopButton.setText("STOP");
-            } else {
-                stopButton.setText("START");
+                timer.start();
             }
         });
 
