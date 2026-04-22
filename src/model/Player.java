@@ -6,6 +6,7 @@ public class Player {
     private int goals;
     private int assists;
     private int points;
+    private int penaltySeconds;
     private int penaltyMinutes;
 
     public Player(String name, int number) {
@@ -14,6 +15,7 @@ public class Player {
         this.goals = 0;
         this.assists = 0;
         this.points = 0;
+        this.penaltySeconds = 0;
         this.penaltyMinutes = 0;
     }
 
@@ -26,9 +28,17 @@ public class Player {
         points++;
     }
 
-    public void addPenalty(int time){
-        int i = time/60;
-        penaltyMinutes += i;
+    public void addPenalty(int seconds) {
+        penaltySeconds += seconds;
+        penaltyMinutes += seconds / 60;
+    }
+    public void tickPenalty(){
+        if(penaltyMinutes > 0){
+            penaltyMinutes--;
+        }
+    }
+    public void clearPenalty() {
+        penaltySeconds = 0;
     }
 
     public String getName() {
@@ -53,6 +63,11 @@ public class Player {
     public int getPenaltyMinutes() {
         return penaltyMinutes;
     }
+
+    public int getPenaltySeconds() {
+        return penaltySeconds;
+    }
+
 
     @Override
     public String toString() {
