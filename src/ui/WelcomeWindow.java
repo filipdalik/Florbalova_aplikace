@@ -12,11 +12,13 @@ public class WelcomeWindow extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
-
-        JLabel label = new JLabel("Welcome to Floorball App", SwingConstants.CENTER);
-        label.setFont(new Font("Arial", Font.BOLD, 20));
+        JLabel label = new JLabel("Floorball App", SwingConstants.CENTER);
+        label.setFont(new Font("Segoe UI", Font.BOLD, 480));
 
         JButton start = new JButton("Start");
+        start.addActionListener(e->{
+            new StartWindow();
+        });
 
         setLayout(new BorderLayout());
         add(label, BorderLayout.CENTER);
