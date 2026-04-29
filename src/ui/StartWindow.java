@@ -4,6 +4,7 @@ import model.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class StartWindow extends JFrame {
 
@@ -85,7 +86,9 @@ public class StartWindow extends JFrame {
     }
 
     private void loadTeams() {
-        for (Team t : manager.getTeams()) {
+        List<Team> teams = manager.getTeams();
+        for (int i = 0; i < teams.size(); i++) {
+            Team t = teams.get(i);
             team1Box.addItem(t);
             team2Box.addItem(t);
         }
@@ -93,7 +96,9 @@ public class StartWindow extends JFrame {
 
     private Team copy(Team original) {
         Team c = new Team(original.getName());
-        for (Player p : original.getPlayers()) {
+        List<Player> players = original.getPlayers();
+        for (int i = 0; i < players.size(); i++) {
+            Player p = players.get(i);
             c.addPlayer(new Player(p.getName(), p.getNumber()));
         }
         return c;
