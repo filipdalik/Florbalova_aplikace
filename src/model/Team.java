@@ -1,9 +1,11 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Team {
+public class Team implements Serializable {
     private String name;
+    private String logoPath;
     private ArrayList<Player> players;
 
     public Team(String name) {
@@ -13,6 +15,9 @@ public class Team {
     public void addPlayer(Player player) {
         players.add(player);
     }
+    public void removePlayer(Player player) {
+        players.remove(player);
+    }
 
     public String getName() {
         return name;
@@ -20,5 +25,17 @@ public class Team {
 
     public ArrayList<Player> getPlayers() {
         return players;
+    }
+
+    public String getLogoPath() {
+        return logoPath;
+    }
+    public void setLogoPath(String logoPath) {
+        this.logoPath = logoPath;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }
