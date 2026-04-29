@@ -1,5 +1,8 @@
 package ui;
 
+import model.Team;
+import model.TeamManager;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -66,6 +69,9 @@ public class WelcomeWindow extends JFrame {
 
         startButton.addActionListener(e->{
             new StartWindow();
+        });
+        settingsButton.addActionListener(e -> {
+            new SettingsWindow();
         });
 
         endButton.addActionListener(e->{
