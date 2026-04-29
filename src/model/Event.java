@@ -9,6 +9,14 @@ public class Event {
         this.text = text;
     }
 
+    public String getTime() {
+        return time;
+    }
+
+    public String getText() {
+        return text;
+    }
+
     @Override
     public String toString() {
         return time + " -> " + text;
