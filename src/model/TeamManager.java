@@ -15,6 +15,7 @@ public class TeamManager {
     public ArrayList<Team> getTeams() {
         return teams;
     }
+
     public void removeTeam(String name){
         for (int i = 0; i < teams.size(); i++) {
             if (teams.get(i).getName().equals(name)) {
