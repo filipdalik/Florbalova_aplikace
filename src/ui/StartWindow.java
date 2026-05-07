@@ -44,10 +44,16 @@ public class StartWindow extends JFrame {
             if (name == null || name.isEmpty()){
                 return;
             }
-            Team t = new Team(name);
-            manager.addTeam(t);
-            team1Box.addItem(t);
-            team2Box.addItem(t);
+            for (int i = 0; i < manager.getTeams().size(); i++) {
+                if (name.equals(manager.getTeams().get(i).getName())){
+                    JOptionPane.showMessageDialog(this, "Team already exists!");
+                    return;
+                }
+                    Team t = new Team(name);
+                    manager.addTeam(t);
+                    team1Box.addItem(t);
+                    team2Box.addItem(t);
+            }
         });
 
         remove.addActionListener(e -> {
@@ -70,7 +76,6 @@ public class StartWindow extends JFrame {
                 new TeamEditorWindow(manager, t);
             }
         });
-
         start.addActionListener(e -> {
             Team t1 = (Team) team1Box.getSelectedItem();
             Team t2 = (Team) team2Box.getSelectedItem();
@@ -80,6 +85,10 @@ public class StartWindow extends JFrame {
             }
             if (t1 == t2){
                 JOptionPane.showMessageDialog(this, "You can't choose same teams!");
+                return;
+            }
+            if (t1.getPlayers().size() < 6 || t2.getPlayers().size() < 6){
+                JOptionPane.showMessageDialog(this, "No players in a team. You need min. 6 players.");
                 return;
             }
             Match match = new Match(copy(t1), copy(t2));
