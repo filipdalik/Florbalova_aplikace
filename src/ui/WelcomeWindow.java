@@ -69,6 +69,7 @@ public class WelcomeWindow extends JFrame {
 
         startButton.addActionListener(e->{
             new StartWindow();
+            dispose();
         });
         settingsButton.addActionListener(e -> {
             new SettingsWindow();
