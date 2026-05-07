@@ -38,7 +38,7 @@ public class TeamEditorWindow extends JFrame {
                 manager.addTeam(team);
 
             } catch (Exception ex) {
-                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Write name and number.");
             }
         });
         list.addMouseListener(new java.awt.event.MouseAdapter() {
