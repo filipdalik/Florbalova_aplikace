@@ -9,7 +9,6 @@ import java.util.List;
 public class StartWindow extends JFrame {
 
     private TeamManager manager;
-
     private JComboBox<Team> team1Box;
     private JComboBox<Team> team2Box;
 
@@ -20,17 +19,25 @@ public class StartWindow extends JFrame {
         setSize(650, 650);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLayout(new GridLayout(5, 1));
+        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         team1Box = new JComboBox<>();
         team2Box = new JComboBox<>();
-
         loadTeams();
 
+        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,10, 10));
         JButton create = new JButton("Create team");
         JButton remove = new JButton("Remove team");
         JButton edit = new JButton("Edit team");
         JButton start = new JButton("Start match");
+        JPanel startPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        start.setPreferredSize(new Dimension(150, 40));
+
+
+        buttonsPanel.add(create);
+        buttonsPanel.add(remove);
+        buttonsPanel.add(edit);
+        startPanel.add(start);
 
         create.addActionListener(e -> {
             String name = JOptionPane.showInputDialog("Team name:");
@@ -44,11 +51,17 @@ public class StartWindow extends JFrame {
         });
 
         remove.addActionListener(e -> {
-            String name = JOptionPane.showInputDialog("Team name:");
-            if (name == null || name.isEmpty()){
-                return;
+            Team selected = (Team) team1Box.getSelectedItem();
+            if (selected != null){
+                int confirm = JOptionPane.showConfirmDialog(this, "Really delete " + selected.getName() + "?");
+                if (confirm == JOptionPane.YES_OPTION){
+                    manager.removeTeam(selected.getName());
+                    team1Box.removeItem(selected);
+                    team2Box.removeItem(selected);
+                }
+            }else {
+                JOptionPane.showMessageDialog(this, "No team selected");
             }
-            manager.removeTeam(name);
         });
 
         edit.addActionListener(e -> {
@@ -62,6 +75,7 @@ public class StartWindow extends JFrame {
             Team t1 = (Team) team1Box.getSelectedItem();
             Team t2 = (Team) team2Box.getSelectedItem();
             if (t1 == null || t2 == null){
+                JOptionPane.showMessageDialog(this, "No team selected");
                 return;
             }
             if (t1 == t2){
@@ -73,14 +87,17 @@ public class StartWindow extends JFrame {
             dispose();
         });
 
+        add(Box.createVerticalStrut(20));
+        add(new JLabel("  Select Team 1:"));
         add(team1Box);
+        add(Box.createVerticalStrut(10));
+        add(new JLabel("  Select Team 2:"));
         add(team2Box);
-        JPanel panel = new JPanel(new BorderLayout(100,100));
-        panel.add(create, BorderLayout.EAST);
-        panel.add(remove, BorderLayout.WEST);
-        add(panel);
-        add(edit);
-        add(start);
+        add(Box.createVerticalStrut(20));
+        add(buttonsPanel);
+        add(Box.createVerticalStrut(20));
+        add(startPanel);
+        add(Box.createVerticalStrut(20));
 
         setVisible(true);
     }
