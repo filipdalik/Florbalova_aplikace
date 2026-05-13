@@ -29,7 +29,7 @@ public class WelcomeWindow extends JFrame {
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(new Color(43, 42, 42));
-        buttonPanel.setLayout(new GridLayout(3,1,0,20));
+        buttonPanel.setLayout(new GridLayout(4,1,0,20));
 
 
         JButton startButton = new JButton("START");
@@ -57,7 +57,16 @@ public class WelcomeWindow extends JFrame {
         endButton.setBorder(BorderFactory.createEmptyBorder());
         endButton.setPreferredSize(new Dimension(200,50));
 
+        JButton historyButton = new JButton("History");
+        historyButton.setFocusPainted(false);
+        historyButton.setForeground(Color.WHITE);
+        historyButton.setFont(new Font("Segoe UI",Font.BOLD,25));
+        historyButton.setBackground(new Color(134, 0, 179));
+        historyButton.setBorder(BorderFactory.createEmptyBorder());
+        historyButton.setPreferredSize(new Dimension(200,50));
+
         buttonPanel.add(startButton);
+        buttonPanel.add(historyButton);
         buttonPanel.add(settingsButton);
         buttonPanel.add(endButton);
         panel1.add(buttonPanel);
@@ -66,6 +75,9 @@ public class WelcomeWindow extends JFrame {
         startButton.addActionListener(e->{
             new StartWindow();
             dispose();
+        });
+        historyButton.addActionListener(e->{
+            new HistoryWindow();
         });
         settingsButton.addActionListener(e -> {
             new SettingsWindow();
