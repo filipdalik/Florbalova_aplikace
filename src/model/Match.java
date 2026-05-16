@@ -1,5 +1,8 @@
 package model;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Match {
@@ -8,7 +11,10 @@ public class Match {
     private int score1;
     private int score2;
     private int seconds;
+    private int minutes;
     private ArrayList<Event> events;
+    private int period;
+    private final int periodTime = 20;
 
     public Match(Team team1, Team team2) {
         this.team1 = team1;
@@ -17,7 +23,33 @@ public class Match {
         this.score2 = 0;
         this.seconds = 0;
         this.events = new ArrayList<>();
+        this.period = 1;
+        addEvent("The match was started: " + team1.getName() + " vs " + team2.getName());
     }
+
+    public boolean tick() {
+        seconds++;
+        if (seconds == 60) {
+            minutes++;
+        }
+        if (minutes > periodTime) {
+            return true;
+        }
+        if (this.minutes >= 20) {
+            this.minutes = 20;
+            this.seconds = 0;
+            return true;
+        }
+        return false;
+    }
+
+    public void nextPeriod() {
+        period++;
+        minutes = 0;
+        seconds = 0;
+        addEvent("The " + period + ". period has begun.");
+    }
+
     public boolean addGoal(Team team, Player goal, Player assist){
         if (goal == null){
             return false;
@@ -47,7 +79,6 @@ public class Match {
         if (player == null){
             return;
         }
-
         player.addPenalty(seconds);
         String time = getMinutes() + ":" + String.format("%02d", getSeconds());
         events.add(new Event(time, player.getName() + " - PENALTY: " + type));
@@ -58,21 +89,26 @@ public class Match {
         events.add(new Event(time, text));
     }
 
-    public void tick() {
-        seconds++;
-        for (int i = 0; i < team1.getPlayers().size(); i++) {
-            Player p = team1.getPlayers().get(i);
-            if (p.getPenaltySeconds() > 0) {
-                p.tickPenalty();
+    public void saveToHistory() {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("history.txt", true))) {
+            bw.write("=== Match: " + team1.getName() + " vs " + team2.getName() + " ===");
+            bw.newLine();
+            bw.write("Score in the end: " + score1 + ":" + score2);
+            bw.newLine();
+            bw.write("Events of match:");
+            bw.newLine();
+            for (Object e : events) {
+                bw.write(e.toString());
+                bw.newLine();
             }
-        }
-        for (int i = 0; i < team2.getPlayers().size(); i++) {
-            Player p = team2.getPlayers().get(i);
-            if (p.getPenaltySeconds() > 0) {
-                p.tickPenalty();
-            }
+            bw.write("------------------------------------------");
+            bw.newLine();
+            bw.flush();
+        } catch (IOException e) {
+            System.err.println("Error writing history: " + e.getMessage());
         }
     }
+
 
     public int getMinutes() {
         return seconds / 60;
@@ -99,5 +135,8 @@ public class Match {
     }
     public ArrayList<Event> getEvents() {
         return events;
+    }
+    public int getPeriod() {
+        return period;
     }
 }
