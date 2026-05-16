@@ -42,18 +42,21 @@ public class StartWindow extends JFrame {
         create.addActionListener(e -> {
             String name = JOptionPane.showInputDialog("Team name:");
             if (name == null || name.isEmpty()){
+                System.out.println("Team name cannot be empty");
                 return;
             }
             for (int i = 0; i < manager.getTeams().size(); i++) {
                 if (name.equals(manager.getTeams().get(i).getName())){
                     JOptionPane.showMessageDialog(this, "Team already exists!");
+                    System.out.println("Team already exists!");
                     return;
                 }
-                    Team t = new Team(name);
-                    manager.addTeam(t);
-                    team1Box.addItem(t);
-                    team2Box.addItem(t);
             }
+            Team t = new Team(name);
+            manager.addTeam(t);
+            team1Box.addItem(t);
+            team2Box.addItem(t);
+            System.out.println("Team added");
         });
 
         remove.addActionListener(e -> {
