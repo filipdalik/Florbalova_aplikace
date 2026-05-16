@@ -29,13 +29,11 @@ public class TeamEditorWindow extends JFrame {
 
             String name = JOptionPane.showInputDialog("Name:");
             String num = JOptionPane.showInputDialog("Number:");
-
             try {
                 Player p = new Player(name, Integer.parseInt(num));
                 team.addPlayer(p);
-
                 model.addElement(p);
-                manager.addTeam(team);
+                manager.save();
 
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Write name and number.");
