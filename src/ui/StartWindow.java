@@ -115,6 +115,8 @@ public class StartWindow extends JFrame {
     }
 
     private void loadTeams() {
+        team1Box.removeAllItems();
+        team2Box.removeAllItems();
         List<Team> teams = manager.getTeams();
         for (int i = 0; i < teams.size(); i++) {
             Team t = teams.get(i);
