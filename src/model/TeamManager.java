@@ -32,7 +32,7 @@ public class TeamManager {
 
     public void save() {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))) {
-            out.writeObject(teams);
+            out.writeObject(this.teams);
         } catch (Exception e) {
             e.printStackTrace();
         }
