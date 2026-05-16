@@ -11,7 +11,6 @@ public class TeamManager {
     public TeamManager() {
         load();
     }
-
     public ArrayList<Team> getTeams() {
         return teams;
     }
@@ -27,16 +26,11 @@ public class TeamManager {
     }
 
     public void addTeam(Team team) {
-        for (int i = 0; i < teams.size(); i++) {
-            if (teams.get(i).getName().equals(team.getName())) {
-                teams.remove(i);
-            }
-        }
         teams.add(team);
         save();
     }
 
-    private void save() {
+    public void save() {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))) {
             out.writeObject(teams);
         } catch (Exception e) {
