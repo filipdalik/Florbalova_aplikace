@@ -2,6 +2,7 @@ package ui;
 
 import model.Match;
 import model.Player;
+import model.Team;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,14 +15,19 @@ public class MainWindow extends JFrame {
     private JLabel team2Label;
     private JLabel periodLabel;
 
+    private DefaultListModel<String> team1PenaltiesModel;
+    private DefaultListModel<String> team2PenaltiesModel;
+    private JList<String> team1PenaltiesList;
+    private JList<String> team2PenaltiesList;
+
     private Timer timer;
     private boolean running = false;
     private Match match;
 
+    private int tickCounter = 0;
+
     public MainWindow(Match match) {
-
         this.match = match;
-
 
         setTitle("Match");
         setSize(950, 750);
@@ -53,9 +59,39 @@ public class MainWindow extends JFrame {
         teamPanel.add(team1Label);
         teamPanel.add(team2Label);
 
+        team1PenaltiesModel = new DefaultListModel<>();
+        team2PenaltiesModel = new DefaultListModel<>();
+        team1PenaltiesList = new JList<>(team1PenaltiesModel);
+        team2PenaltiesList = new JList<>(team2PenaltiesModel);
+
+        Font penaltyFont = new Font("Monospaced", Font.BOLD, 20);
+        team1PenaltiesList.setFont(penaltyFont);
+        team2PenaltiesList.setFont(penaltyFont);
+        team1PenaltiesList.setForeground(Color.RED);
+        team2PenaltiesList.setForeground(Color.RED);
+        team1PenaltiesList.setBackground(getBackground());
+        team2PenaltiesList.setBackground(getBackground());
+
+        JPanel penaltyDisplayPanel = new JPanel(new GridLayout(1, 2, 100, 0));
+
+        JPanel p1Wrapper = new JPanel(new BorderLayout());
+        p1Wrapper.add(new JLabel("Penalties:", SwingConstants.RIGHT), BorderLayout.NORTH);
+        p1Wrapper.add(team1PenaltiesList, BorderLayout.CENTER);
+
+        JPanel p2Wrapper = new JPanel(new BorderLayout());
+        p2Wrapper.add(new JLabel("Penalties:", SwingConstants.LEFT), BorderLayout.NORTH);
+        p2Wrapper.add(team2PenaltiesList, BorderLayout.CENTER);
+
+        penaltyDisplayPanel.add(p1Wrapper);
+        penaltyDisplayPanel.add(p2Wrapper);
+
         JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.add(scoreLabel, BorderLayout.CENTER);
-        centerPanel.add(teamPanel, BorderLayout.SOUTH);
+
+        JPanel bottomCenterPanel = new JPanel(new BorderLayout());
+        bottomCenterPanel.add(teamPanel, BorderLayout.NORTH);
+        bottomCenterPanel.add(penaltyDisplayPanel, BorderLayout.SOUTH);
+        centerPanel.add(bottomCenterPanel, BorderLayout.SOUTH);
 
         JPanel buttonPanel = new JPanel(new FlowLayout());
         JButton goal1Button = new JButton("GOAL TEAM 1");
@@ -124,6 +160,73 @@ public class MainWindow extends JFrame {
             }
         });
 
+        penalty.addActionListener(e -> {
+                Team selectedTeam = (Team) JOptionPane.showInputDialog(
+                this, "Select team for penalty:", "Penalty Team",
+                JOptionPane.PLAIN_MESSAGE, null, new Team[]{match.getTeam1(), match.getTeam2()}, null
+        );
+        if (selectedTeam == null){
+            return;
+        }
+
+        Player selectedPlayer = (Player) JOptionPane.showInputDialog(
+                this, "Select player:", "Penalty Player",
+                JOptionPane.PLAIN_MESSAGE, null, selectedTeam.getPlayers().toArray(), null
+        );
+        if (selectedPlayer == null){
+            return;
+        }
+
+        String[] durationOptions = {"2 minutes", "2+2 minutes (4 min)"};
+        String selectedDuration = (String) JOptionPane.showInputDialog(
+                this, "Select penalty duration:", "Penalty Type",
+                JOptionPane.PLAIN_MESSAGE, null, durationOptions, durationOptions[0]
+        );
+        if (selectedDuration == null){
+            return;
+        }
+
+        String[] foulOptions = {
+                "Slashing",
+                "High Stick",
+                "Holding",
+                "Tripping",
+                "Incorrect Pushing / Bodily contact",
+                "Incorrect Distance (3m)",
+                "Playing on the floor / Hand play",
+                "Incorrect Substitution",
+                "Unsportsmanlike conduct",
+                "Other foul..."
+        };
+
+        String selectedReason = (String) JOptionPane.showInputDialog(
+                this, "Select floorball foul:", "Reason for Penalty",
+                JOptionPane.PLAIN_MESSAGE, null, foulOptions, foulOptions[0]
+        );
+        if (selectedReason == null){
+            return;
+        }
+        if (selectedReason.equals("Other foul...")) {
+            selectedReason = JOptionPane.showInputDialog(this, "Type custom reason:");
+            if (selectedReason == null || selectedReason.trim().isEmpty()) {
+                selectedReason = "Unspecified foul";
+            }
+        }
+
+        int seconds = selectedDuration.equals(durationOptions[0]) ? 120 : 240;
+        selectedPlayer.addPenalty(seconds);
+            String eventText = String.format("%s - #%d %s (%s) - Reason: %s",
+                    String.format("%02d:%02d", match.getMinutes(), match.getSeconds()),
+                    selectedPlayer.getNumber(),
+                    selectedPlayer.getName(),
+                    selectedDuration,
+                    selectedReason
+            );
+
+        match.addEvent(eventText);
+        updateUIData();
+        });
+
         stopButton.addActionListener(e -> {
             running = !running;
             stopButton.setText(running ? "STOP" : "START");
@@ -155,9 +258,19 @@ public class MainWindow extends JFrame {
         add(buttonPanel, BorderLayout.SOUTH);
         setVisible(true);
 
-        timer = new Timer(50, e -> {
+        timer = new Timer(1000, e -> {
             if (running) {
                 boolean periodEnd = match.tick();
+                tickCounter++;
+                if (tickCounter >= 20) {
+                    tickCounter = 0;
+                    for (Player p : match.getTeam1().getPlayers()) {
+                        p.tickPenalty();
+                    }
+                    for (Player p : match.getTeam2().getPlayers()) {
+                        p.tickPenalty();
+                    }
+                }
                 updateUIData();
                 if (periodEnd || match.getMinutes() >= 20) {
                     stopMatch();
@@ -171,11 +284,26 @@ public class MainWindow extends JFrame {
         timeLabel.setText(String.format("%02d:%02d", match.getMinutes(), match.getSeconds()));
         scoreLabel.setText(match.getScore1() + " : " + match.getScore2());
         periodLabel.setText(match.getPeriod() + ". period");
+
+        team1PenaltiesModel.clear();
+        team2PenaltiesModel.clear();
+
+        for (Player p : match.getTeam1().getPlayers()) {
+            if (p.getPenaltySeconds() > 0) {
+                team1PenaltiesModel.addElement(p.getFormattedPenalty());
+            }
+        }
+        for (Player p : match.getTeam2().getPlayers()) {
+            if (p.getPenaltySeconds() > 0) {
+                team2PenaltiesModel.addElement(p.getFormattedPenalty());
+            }
+        }
     }
 
     private void stopMatch() {
         running = false;
         timer.stop();
+        tickCounter = 0;
 
         if (match.getPeriod() < 3){
             JOptionPane.showMessageDialog(this, "End of " + match.getPeriod() + ". period!");
