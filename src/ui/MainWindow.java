@@ -64,7 +64,7 @@ public class MainWindow extends JFrame {
         team1PenaltiesList = new JList<>(team1PenaltiesModel);
         team2PenaltiesList = new JList<>(team2PenaltiesModel);
 
-        Font penaltyFont = new Font("Monospaced", Font.BOLD, 20);
+        Font penaltyFont = new Font("Monospaced", Font.BOLD, 22);
         team1PenaltiesList.setFont(penaltyFont);
         team2PenaltiesList.setFont(penaltyFont);
         team1PenaltiesList.setForeground(Color.RED);
@@ -72,25 +72,43 @@ public class MainWindow extends JFrame {
         team1PenaltiesList.setBackground(getBackground());
         team2PenaltiesList.setBackground(getBackground());
 
-        JPanel penaltyDisplayPanel = new JPanel(new GridLayout(1, 2, 100, 0));
+        JPanel leftPenaltyPanel = new JPanel(new GridBagLayout());
+        JPanel rightPenaltyPanel = new JPanel(new GridBagLayout());
 
-        JPanel p1Wrapper = new JPanel(new BorderLayout());
-        p1Wrapper.add(new JLabel("Penalties:", SwingConstants.RIGHT), BorderLayout.NORTH);
-        p1Wrapper.add(team1PenaltiesList, BorderLayout.CENTER);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.insets = new Insets(0, 0, 5, 0);
 
-        JPanel p2Wrapper = new JPanel(new BorderLayout());
-        p2Wrapper.add(new JLabel("Penalties:", SwingConstants.LEFT), BorderLayout.NORTH);
-        p2Wrapper.add(team2PenaltiesList, BorderLayout.CENTER);
+        JLabel p1Title = new JLabel("Penalties", SwingConstants.CENTER);
+        p1Title.setFont(new Font("Arial", Font.BOLD, 14));
+        leftPenaltyPanel.add(p1Title, gbc);
+        gbc.gridy = 1;
+        leftPenaltyPanel.add(team1PenaltiesList, gbc);
 
-        penaltyDisplayPanel.add(p1Wrapper);
-        penaltyDisplayPanel.add(p2Wrapper);
+        gbc.gridy = 0;
+        JLabel p2Title = new JLabel("Penalties", SwingConstants.CENTER);
+        p2Title.setFont(new Font("Arial", Font.BOLD, 14));
+        rightPenaltyPanel.add(p2Title, gbc);
+        gbc.gridy = 1;
+        rightPenaltyPanel.add(team2PenaltiesList, gbc);
+
+        JPanel penaltyDisplayPanel = new JPanel(new GridLayout(1, 2, 50, 0));
+        penaltyDisplayPanel.add(leftPenaltyPanel);
+        penaltyDisplayPanel.add(rightPenaltyPanel);
 
         JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.add(scoreLabel, BorderLayout.CENTER);
 
         JPanel bottomCenterPanel = new JPanel(new BorderLayout());
         bottomCenterPanel.add(teamPanel, BorderLayout.NORTH);
-        bottomCenterPanel.add(penaltyDisplayPanel, BorderLayout.SOUTH);
+
+        JPanel spacingPanel = new JPanel(new BorderLayout());
+        spacingPanel.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
+        spacingPanel.add(penaltyDisplayPanel, BorderLayout.CENTER);
+        bottomCenterPanel.add(spacingPanel, BorderLayout.SOUTH);
         centerPanel.add(bottomCenterPanel, BorderLayout.SOUTH);
 
         JPanel buttonPanel = new JPanel(new FlowLayout());
