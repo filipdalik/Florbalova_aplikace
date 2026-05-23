@@ -31,16 +31,24 @@ public class Player implements Serializable {
     }
 
     public void addPenalty(int seconds) {
-        penaltySeconds += seconds;
-        penaltyMinutes += seconds / 60;
+        this.penaltySeconds += seconds;
+        this.penaltyMinutes = this.penaltySeconds / 60;
     }
-    public void tickPenalty(){
-        if(penaltyMinutes > 0){
-            penaltyMinutes--;
+    public void tickPenalty() {
+        if (penaltySeconds > 0) {
+            penaltySeconds--;
+            penaltyMinutes = penaltySeconds / 60;
         }
     }
     public void clearPenalty() {
         penaltySeconds = 0;
+        penaltyMinutes = 0;
+    }
+
+    public String getFormattedPenalty() {
+        int mins = penaltySeconds / 60;
+        int secs = penaltySeconds % 60;
+        return String.format("%02d:%02d - #%d", mins, secs, number);
     }
 
     public String getName() {
