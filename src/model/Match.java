@@ -75,15 +75,6 @@ public class Match {
         return true;
     }
 
-    public void addPenalty(Player player, int seconds, String type) {
-        if (player == null){
-            return;
-        }
-        player.addPenalty(seconds);
-        String time = getMinutes() + ":" + String.format("%02d", getSeconds());
-        events.add(new Event(time, player.getName() + " - PENALTY: " + type));
-    }
-
     public void addEvent(String text) {
         String time = getMinutes() + ":" + String.format("%02d", getSeconds());
         events.add(new Event(time, text));
