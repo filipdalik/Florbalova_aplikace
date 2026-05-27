@@ -179,60 +179,60 @@ public class MainWindow extends JFrame {
         });
 
         penalty.addActionListener(e -> {
-                Team selectedTeam = (Team) JOptionPane.showInputDialog(
-                this, "Select team for penalty:", "Penalty Team",
-                JOptionPane.PLAIN_MESSAGE, null, new Team[]{match.getTeam1(), match.getTeam2()}, null
-        );
-        if (selectedTeam == null){
-            return;
-        }
-
-        Player selectedPlayer = (Player) JOptionPane.showInputDialog(
-                this, "Select player:", "Penalty Player",
-                JOptionPane.PLAIN_MESSAGE, null, selectedTeam.getPlayers().toArray(), null
-        );
-        if (selectedPlayer == null){
-            return;
-        }
-
-        String[] durationOptions = {"2 minutes", "2+2 minutes (4 min)"};
-        String selectedDuration = (String) JOptionPane.showInputDialog(
-                this, "Select penalty duration:", "Penalty Type",
-                JOptionPane.PLAIN_MESSAGE, null, durationOptions, durationOptions[0]
-        );
-        if (selectedDuration == null){
-            return;
-        }
-
-        String[] foulOptions = {
-                "Slashing",
-                "High Stick",
-                "Holding",
-                "Tripping",
-                "Incorrect Pushing / Bodily contact",
-                "Incorrect Distance (3m)",
-                "Playing on the floor / Hand play",
-                "Incorrect Substitution",
-                "Unsportsmanlike conduct",
-                "Other foul..."
-        };
-
-        String selectedReason = (String) JOptionPane.showInputDialog(
-                this, "Select floorball foul:", "Reason for Penalty",
-                JOptionPane.PLAIN_MESSAGE, null, foulOptions, foulOptions[0]
-        );
-        if (selectedReason == null){
-            return;
-        }
-        if (selectedReason.equals("Other foul...")) {
-            selectedReason = JOptionPane.showInputDialog(this, "Type custom reason:");
-            if (selectedReason == null || selectedReason.trim().isEmpty()) {
-                selectedReason = "Unspecified foul";
+            Team selectedTeam = (Team) JOptionPane.showInputDialog(
+                    this, "Select team for penalty:", "Penalty Team",
+                    JOptionPane.PLAIN_MESSAGE, null, new Team[]{match.getTeam1(), match.getTeam2()}, null
+            );
+            if (selectedTeam == null){
+                return;
             }
-        }
 
-        int seconds = selectedDuration.equals(durationOptions[0]) ? 120 : 240;
-        selectedPlayer.addPenalty(seconds);
+            Player selectedPlayer = (Player) JOptionPane.showInputDialog(
+                    this, "Select player:", "Penalty Player",
+                    JOptionPane.PLAIN_MESSAGE, null, selectedTeam.getPlayers().toArray(), null
+            );
+            if (selectedPlayer == null){
+                return;
+            }
+
+            String[] durationOptions = {"2 minutes", "2+2 minutes (4 min)"};
+            String selectedDuration = (String) JOptionPane.showInputDialog(
+                    this, "Select penalty duration:", "Penalty Type",
+                    JOptionPane.PLAIN_MESSAGE, null, durationOptions, durationOptions[0]
+            );
+            if (selectedDuration == null){
+                return;
+            }
+
+            String[] foulOptions = {
+                    "Slashing",
+                    "High Stick",
+                    "Holding",
+                    "Tripping",
+                    "Incorrect Pushing / Bodily contact",
+                    "Incorrect Distance (3m)",
+                    "Playing on the floor / Hand play",
+                    "Incorrect Substitution",
+                    "Unsportsmanlike conduct",
+                    "Other foul..."
+            };
+
+            String selectedReason = (String) JOptionPane.showInputDialog(
+                    this, "Select floorball foul:", "Reason for Penalty",
+                    JOptionPane.PLAIN_MESSAGE, null, foulOptions, foulOptions[0]
+            );
+            if (selectedReason == null){
+                return;
+            }
+            if (selectedReason.equals("Other foul...")) {
+                selectedReason = JOptionPane.showInputDialog(this, "Type custom reason:");
+                if (selectedReason == null || selectedReason.trim().isEmpty()) {
+                    selectedReason = "Unspecified foul";
+                }
+            }
+
+            int seconds = selectedDuration.equals(durationOptions[0]) ? 120 : 240;
+            selectedPlayer.addPenalty(seconds);
             String eventText = String.format("%s - #%d %s (%s) - Reason: %s",
                     String.format("%02d:%02d", match.getMinutes(), match.getSeconds()),
                     selectedPlayer.getNumber(),
@@ -241,8 +241,8 @@ public class MainWindow extends JFrame {
                     selectedReason
             );
 
-        match.addEvent(eventText);
-        updateUIData();
+            match.addEvent(eventText);
+            updateUIData();
         });
 
         stopButton.addActionListener(e -> {
@@ -279,16 +279,13 @@ public class MainWindow extends JFrame {
         timer = new Timer(1000, e -> {
             if (running) {
                 boolean periodEnd = match.tick();
-                tickCounter++;
-                if (tickCounter >= 20) {
-                    tickCounter = 0;
-                    for (Player p : match.getTeam1().getPlayers()) {
-                        p.tickPenalty();
-                    }
-                    for (Player p : match.getTeam2().getPlayers()) {
-                        p.tickPenalty();
-                    }
+                for (int i = 0; i < match.getTeam1().getPlayers().size(); i++) {
+                    match.getTeam1().getPlayers().get(i).tickPenalty();
                 }
+                for (int i = 0; i < match.getTeam2().getPlayers().size(); i++) {
+                    match.getTeam2().getPlayers().get(i).tickPenalty();
+                }
+
                 updateUIData();
                 if (periodEnd || match.getMinutes() >= 20) {
                     stopMatch();
