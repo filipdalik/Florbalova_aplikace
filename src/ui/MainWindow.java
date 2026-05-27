@@ -36,26 +36,39 @@ public class MainWindow extends JFrame {
         setResizable(false);
         setLayout(new BorderLayout());
 
+
         JPanel northPanel = new JPanel(new GridLayout(2, 1));
+        northPanel.setBackground(new Color(43, 42, 42));
+
         timeLabel = new JLabel("00:00", SwingConstants.CENTER);
         timeLabel.setFont(new Font("Arial", Font.BOLD, 80));
-        timeLabel.setForeground(new Color(108, 0, 0));
+
+        timeLabel.setForeground(new Color(234, 40, 40));
+
         periodLabel = new JLabel("1. period", SwingConstants.CENTER);
         periodLabel.setFont(new Font("Arial", Font.ITALIC, 25));
+
+        periodLabel.setForeground(Color.WHITE);
+
         northPanel.add(timeLabel);
         northPanel.add(periodLabel);
 
         scoreLabel = new JLabel("0 : 0", SwingConstants.CENTER);
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 120));
 
+        scoreLabel.setForeground(Color.WHITE);
+
         team1Label = new JLabel(match.getTeam1().getName(), SwingConstants.RIGHT);
         team2Label = new JLabel(match.getTeam2().getName(), SwingConstants.LEFT);
         team1Label.setFont(new Font("Arial", Font.BOLD, 30));
         team2Label.setFont(new Font("Arial", Font.BOLD, 30));
-        team1Label.setForeground(new Color(23, 50, 106));
-        team2Label.setForeground(new Color(23, 50, 106));
+
+        team1Label.setForeground(new Color(135, 180, 250));
+        team2Label.setForeground(new Color(135, 180, 250));
+
 
         JPanel teamPanel = new JPanel(new GridLayout(1, 2, 50, 0));
+        teamPanel.setBackground(new Color(43, 42, 42));
         teamPanel.add(team1Label);
         teamPanel.add(team2Label);
 
@@ -67,13 +80,16 @@ public class MainWindow extends JFrame {
         Font penaltyFont = new Font("Monospaced", Font.BOLD, 22);
         team1PenaltiesList.setFont(penaltyFont);
         team2PenaltiesList.setFont(penaltyFont);
-        team1PenaltiesList.setForeground(Color.RED);
-        team2PenaltiesList.setForeground(Color.RED);
-        team1PenaltiesList.setBackground(getBackground());
-        team2PenaltiesList.setBackground(getBackground());
+
+        team1PenaltiesList.setForeground(new Color(255, 60, 60));
+        team2PenaltiesList.setForeground(new Color(255, 60, 60));
+        team1PenaltiesList.setBackground(new Color(30, 30, 30));
+        team2PenaltiesList.setBackground(new Color(30, 30, 30));
 
         JPanel leftPenaltyPanel = new JPanel(new GridBagLayout());
+        leftPenaltyPanel.setBackground(new Color(43, 42, 42));
         JPanel rightPenaltyPanel = new JPanel(new GridBagLayout());
+        rightPenaltyPanel.setBackground(new Color(43, 42, 42));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -84,6 +100,7 @@ public class MainWindow extends JFrame {
 
         JLabel p1Title = new JLabel("Penalties", SwingConstants.CENTER);
         p1Title.setFont(new Font("Arial", Font.BOLD, 14));
+        p1Title.setForeground(Color.WHITE);
         leftPenaltyPanel.add(p1Title, gbc);
         gbc.gridy = 1;
         leftPenaltyPanel.add(team1PenaltiesList, gbc);
@@ -91,36 +108,78 @@ public class MainWindow extends JFrame {
         gbc.gridy = 0;
         JLabel p2Title = new JLabel("Penalties", SwingConstants.CENTER);
         p2Title.setFont(new Font("Arial", Font.BOLD, 14));
+
+        p2Title.setForeground(Color.WHITE);
         rightPenaltyPanel.add(p2Title, gbc);
         gbc.gridy = 1;
         rightPenaltyPanel.add(team2PenaltiesList, gbc);
 
         JPanel penaltyDisplayPanel = new JPanel(new GridLayout(1, 2, 50, 0));
+        penaltyDisplayPanel.setBackground(new Color(43, 42, 42));
         penaltyDisplayPanel.add(leftPenaltyPanel);
         penaltyDisplayPanel.add(rightPenaltyPanel);
 
         JPanel centerPanel = new JPanel(new BorderLayout());
+        centerPanel.setBackground(new Color(43, 42, 42));
         centerPanel.add(scoreLabel, BorderLayout.CENTER);
 
         JPanel bottomCenterPanel = new JPanel(new BorderLayout());
+        bottomCenterPanel.setBackground(new Color(43, 42, 42));
         bottomCenterPanel.add(teamPanel, BorderLayout.NORTH);
 
         JPanel spacingPanel = new JPanel(new BorderLayout());
+        spacingPanel.setBackground(new Color(43, 42, 42));
         spacingPanel.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
         spacingPanel.add(penaltyDisplayPanel, BorderLayout.CENTER);
         bottomCenterPanel.add(spacingPanel, BorderLayout.SOUTH);
         centerPanel.add(bottomCenterPanel, BorderLayout.SOUTH);
 
         JPanel buttonPanel = new JPanel(new FlowLayout());
+        buttonPanel.setBackground(new Color(30, 30, 30));
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
         JButton goal1Button = new JButton("GOAL TEAM 1");
         JButton goal2Button = new JButton("GOAL TEAM 2");
         JButton stopButton = new JButton("START");
-        stopButton.setBackground(new Color(108, 0, 0));
-        stopButton.setForeground(new Color(255, 255, 255));
         JButton penalty = new JButton("PENALTY");
         JButton events = new JButton("EVENTS");
         JButton addEvent = new JButton("ADD EVENT");
 
+        goal1Button.setFocusPainted(false);
+        goal1Button.setForeground(Color.WHITE);
+        goal1Button.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        goal1Button.setBackground(new Color(0, 100, 180));
+        goal1Button.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
+
+        goal2Button.setFocusPainted(false);
+        goal2Button.setForeground(Color.WHITE);
+        goal2Button.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        goal2Button.setBackground(new Color(0, 100, 180));
+        goal2Button.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
+
+        penalty.setFocusPainted(false);
+        penalty.setForeground(Color.WHITE);
+        penalty.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        penalty.setBackground(new Color(134, 0, 179));
+        penalty.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
+
+        stopButton.setFocusPainted(false);
+        stopButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        stopButton.setBackground(new Color(120, 0, 0));
+        stopButton.setForeground(Color.WHITE);
+        stopButton.setBorder(BorderFactory.createEmptyBorder(10, 25, 10, 25));
+
+        events.setFocusPainted(false);
+        events.setForeground(Color.WHITE);
+        events.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        events.setBackground(new Color(234, 141, 0));
+        events.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
+
+        addEvent.setFocusPainted(false);
+        addEvent.setForeground(Color.WHITE);
+        addEvent.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        addEvent.setBackground(new Color(0, 120, 60));
+        addEvent.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
 
         goal1Button.addActionListener(e -> {
 
