@@ -29,7 +29,7 @@ public class WelcomeWindow extends JFrame {
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(new Color(43, 42, 42));
-        buttonPanel.setLayout(new GridLayout(4,1,0,20));
+        buttonPanel.setLayout(new GridLayout(5,1,0,20));
 
 
         JButton startButton = new JButton("START");
