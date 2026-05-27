@@ -42,7 +42,7 @@ public class HistoryWindow extends JFrame {
             bottomPanel.setBackground(new Color(43, 42, 42));
             bottomPanel.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
 
-            JButton backButton = new JButton("BACK");
+            JButton backButton = new JButton("CLOSE");
             backButton.setFocusPainted(false);
             backButton.setForeground(Color.WHITE);
             backButton.setFont(new Font("Segoe UI", Font.BOLD, 20));

@@ -69,7 +69,7 @@ public class SettingsWindow extends JFrame {
         buttonPanel.add(editTeams, gbc);
 
         gbc.gridy = 2;
-        JButton close = new JButton("Close");
+        JButton close = new JButton("CLOSE");
         styleButton(close, new Color(120, 0, 0));
         close.addActionListener(e -> dispose());
         buttonPanel.add(close, gbc);
