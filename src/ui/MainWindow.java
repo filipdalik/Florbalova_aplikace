@@ -7,7 +7,7 @@ import model.Team;
 import javax.swing.*;
 import java.awt.*;
 
-public class MainWindow extends JFrame {
+public class MainWindow extends JFrame implements Runnable{
 
     private JLabel scoreLabel;
     private JLabel timeLabel;
@@ -20,11 +20,10 @@ public class MainWindow extends JFrame {
     private JList<String> team1PenaltiesList;
     private JList<String> team2PenaltiesList;
 
-    private Timer timer;
+    private Thread matchThread;
     private boolean running = false;
     private Match match;
-
-    private int tickCounter = 0;
+    private JButton stopButton;
 
     public MainWindow(Match match) {
         this.match = match;
@@ -140,7 +139,7 @@ public class MainWindow extends JFrame {
 
         JButton goal1Button = new JButton("GOAL TEAM 1");
         JButton goal2Button = new JButton("GOAL TEAM 2");
-        JButton stopButton = new JButton("START");
+        stopButton = new JButton("START");
         JButton penalty = new JButton("PENALTY");
         JButton events = new JButton("EVENTS");
         JButton addEvent = new JButton("ADD EVENT");
@@ -305,11 +304,14 @@ public class MainWindow extends JFrame {
         });
 
         stopButton.addActionListener(e -> {
-            running = !running;
-            stopButton.setText(running ? "STOP" : "START");
-
-            if (running) {
-                timer.start();
+            if (!running) {
+                running = true;
+                stopButton.setText("STOP");
+                matchThread = new Thread(this);
+                matchThread.start();
+            } else {
+                running = false;
+                stopButton.setText("START");
             }
         });
 
@@ -334,10 +336,16 @@ public class MainWindow extends JFrame {
         add(centerPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
         setVisible(true);
+    }
 
-        timer = new Timer(1000, e -> {
-            if (running) {
+    @Override
+    public void run() {
+        while (running) {
+            try {
+                Thread.sleep(1000);
+
                 boolean periodEnd = match.tick();
+
                 for (int i = 0; i < match.getTeam1().getPlayers().size(); i++) {
                     match.getTeam1().getPlayers().get(i).tickPenalty();
                 }
@@ -345,13 +353,20 @@ public class MainWindow extends JFrame {
                     match.getTeam2().getPlayers().get(i).tickPenalty();
                 }
 
-                updateUIData();
-                if (periodEnd || match.getMinutes() >= 20) {
-                    stopMatch();
-                    stopButton.setText("START");
-                }
+                SwingUtilities.invokeLater(() -> {
+                    updateUIData();
+                    if (periodEnd || match.getMinutes() >= 20) {
+                        running = false;
+                        stopMatch();
+                        stopButton.setText("START");
+                    }
+                });
+
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+                break;
             }
-        });
+        }
     }
 
     private void updateUIData() {
@@ -376,9 +391,6 @@ public class MainWindow extends JFrame {
 
     private void stopMatch() {
         running = false;
-        timer.stop();
-        tickCounter = 0;
-
         if (match.getPeriod() < 3){
             JOptionPane.showMessageDialog(this, "End of " + match.getPeriod() + ". period!");
             match.nextPeriod();
