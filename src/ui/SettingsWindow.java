@@ -33,7 +33,7 @@ public class SettingsWindow extends JFrame {
         gbc.anchor = GridBagConstraints.CENTER;
 
         JButton createTeamButton = new JButton("Create new team");
-        styleButton(createTeamButton, new Color(0, 120, 60));
+        styleButton(createTeamButton, new Color(152, 0, 128));
         createTeamButton.addActionListener(e -> {
             String teamName = JOptionPane.showInputDialog(this, "Enter name for the new team:", "Create Team", JOptionPane.PLAIN_MESSAGE);
             if (teamName != null && !teamName.trim().isEmpty()) {
@@ -46,7 +46,7 @@ public class SettingsWindow extends JFrame {
 
         gbc.gridy = 1;
         JButton editTeams = new JButton("Edit teams / Players");
-        styleButton(editTeams, new Color(234, 141, 0));
+        styleButton(editTeams, new Color(0, 103, 88));
         editTeams.addActionListener(e -> {
             if (manager.getTeams().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "No teams available. Create a team first.", "Info", JOptionPane.WARNING_MESSAGE);
