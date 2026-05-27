@@ -65,8 +65,17 @@ public class WelcomeWindow extends JFrame {
         historyButton.setBorder(BorderFactory.createEmptyBorder());
         historyButton.setPreferredSize(new Dimension(200,50));
 
+        JButton statsButton = new JButton("Statistics");
+        statsButton.setFocusPainted(false);
+        statsButton.setForeground(Color.WHITE);
+        statsButton.setFont(new Font("Segoe UI",Font.BOLD,25));
+        statsButton.setBackground(new Color(25, 71, 0));
+        statsButton.setBorder(BorderFactory.createEmptyBorder());
+        statsButton.setPreferredSize(new Dimension(200,50));
+
         buttonPanel.add(startButton);
         buttonPanel.add(historyButton);
+        buttonPanel.add(statsButton);
         buttonPanel.add(settingsButton);
         buttonPanel.add(endButton);
         panel1.add(buttonPanel);
@@ -78,6 +87,9 @@ public class WelcomeWindow extends JFrame {
         });
         historyButton.addActionListener(e->{
             new HistoryWindow();
+        });
+        statsButton.addActionListener(e->{
+            new StatsWindow();
         });
         settingsButton.addActionListener(e -> {
             new SettingsWindow();
