@@ -22,9 +22,20 @@ public class TeamEditorWindow extends JFrame {
         setSize(400, 500);
         setLocationRelativeTo(null);
 
+        list.setBackground(new Color(30, 30, 30));
+        list.setForeground(Color.WHITE);
+        list.setFont(new Font("Monospaced", Font.BOLD, 16));
+        list.setSelectionBackground(new Color(44, 2, 104));
+        list.setSelectionForeground(Color.WHITE);
+
         load();
 
         JButton add = new JButton("Add player");
+        add.setFocusPainted(false);
+        add.setForeground(Color.WHITE);
+        add.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        add.setBackground(new Color(120, 82, 0));
+        add.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
         add.addActionListener(e -> {
 
             String name = JOptionPane.showInputDialog("Name:");
@@ -48,10 +59,11 @@ public class TeamEditorWindow extends JFrame {
                     team.removePlayer(p);
                     model.removeElement(p);
 
-                    manager.addTeam(team);
+                    manager.save();
                 }
             }
         });
+
         setLayout(new BorderLayout());
         add(new JScrollPane(list), BorderLayout.CENTER);
         add(add, BorderLayout.SOUTH);
