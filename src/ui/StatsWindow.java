@@ -8,10 +8,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * Tato třída reprezentuje okno (JFrame) zobrazující statistiky hráčů vybraného týmu.
+ * Umožňuje uživateli vybrat tým pomocí rozbalovacího seznamu (JComboBox) a pak se ukáže textová tabulka s hráči a jejich statistikami.
+ */
 public class StatsWindow extends JFrame {
     private JComboBox<Team> teamComboBox;
     private JTextArea statsArea;
 
+    /**
+     * Vytvoří a inicializuje okno pro zobrazení statistik hráčů.
+     * Načte dostupné týmy a poté zobrazí statistiky jednotlivých týmů.
+     */
     public StatsWindow() {
         TeamManager teamManager = new TeamManager();
         ArrayList<Team> allTeams = teamManager.getTeams();
@@ -79,6 +87,9 @@ public class StatsWindow extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Tato metoda napíše a formátuje textový přehled statistik pro aktuálně vybraný tým.
+     */
     private void updateStatsText() {
         Team selectedTeam = (Team) teamComboBox.getSelectedItem();
 
