@@ -2,8 +2,16 @@ package ui;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Tato třída reprezentuje uvítací okno (JFrame), kde se nacházejí různá tlačítka pro přesun do jednotli vých oken.
+ * Umožňuje spustit předzápasové menu, zobrazit historii, prohlížet statistiky hráčů, přejít do nastavení, nebo ukončit aplikaci.
+ */
 public class WelcomeWindow extends JFrame {
 
+    /**
+     * Tento konstruktor ytvoří a zobrazí úvodní okno aplikace.
+     * Zobrazuje tlačítka pro přechod mezi oknami a upravuje barvy a styly tlačítek.
+     */
     public WelcomeWindow() {
         setTitle("Floorball app");
         setSize(850, 650);
