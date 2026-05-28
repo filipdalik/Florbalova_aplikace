@@ -2,6 +2,10 @@ package model;
 
 import java.io.Serializable;
 
+/**
+ * Tato třída reprezentuje florbalového hráče a má zaznamenané zápasové statistiky.
+ * Ve třídě je imple,entované Serializable pro ukládání dat.
+ */
 public class Player implements Serializable {
     private String name;
     private int number;
@@ -11,6 +15,9 @@ public class Player implements Serializable {
     private int penaltySeconds;
     private int penaltyMinutes;
 
+    /**
+     * Vytvoří novou instanci hráče se zadaným jménem a číslem.
+     */
     public Player(String name, int number) {
         this.name = name;
         this.number = number;
@@ -21,30 +28,44 @@ public class Player implements Serializable {
         this.penaltyMinutes = 0;
     }
 
+    /**
+     * Navyšuje počet golů a celkových bodů.
+     */
     public void addGoal(){
         goals++;
         points++;
     }
+
+    /**
+     * Navyšuje počet asistencí a celkových bodů.
+     */
     public void addAssist(){
         assists++;
         points++;
     }
 
+    /**
+     * Přidává trestné minuty a sekundy.
+     */
     public void addPenalty(int seconds) {
         this.penaltySeconds += seconds;
         this.penaltyMinutes = this.penaltySeconds / 60;
     }
+
+    /**
+     * Sníží zbývající čas trestu o jednu sekundu.
+     */
     public void tickPenalty() {
         if (penaltySeconds > 0) {
             penaltySeconds--;
             penaltyMinutes = penaltySeconds / 60;
         }
     }
-    public void clearPenalty() {
-        penaltySeconds = 0;
-        penaltyMinutes = 0;
-    }
 
+    /**
+     * Vrátí naformátovaný text s časem trestu a číslem hráče,
+     * @return String text
+     */
     public String getFormattedPenalty() {
         int mins = penaltySeconds / 60;
         int secs = penaltySeconds % 60;
