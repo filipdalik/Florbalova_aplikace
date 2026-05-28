@@ -6,12 +6,21 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Tato třída reprezentuje okno (JFrame) sloužící jako předzápasové menu aplikace.
+ * Umožňuje uživateli vybrat dva týmy, které proti sobě hrají z rozbalovacích seznamů (JComboBox),
+ * Umí také spravovat týmy (vytvořit, smazat a upravit) apoté umí spustit samotný zápas.
+ */
 public class StartWindow extends JFrame {
 
     private TeamManager manager;
     private JComboBox<Team> team1Box;
     private JComboBox<Team> team2Box;
 
+    /**
+     * Vytvoří a zobrazí předzápasové okno.
+     * Inicializuje data pro výběr týmů, načte data z manažera a poté spustí hlavní okno.
+     */
     public StartWindow() {
         manager = new TeamManager();
 
@@ -165,6 +174,9 @@ public class StartWindow extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Tato metoda vyčistí rozbalovací seznamy a znovu do nich načte aktuální seznam týmů z manažera.
+     */
     private void loadTeams() {
         team1Box.removeAllItems();
         team2Box.removeAllItems();
@@ -176,6 +188,12 @@ public class StartWindow extends JFrame {
         }
     }
 
+    /**
+     * Tato metoda vytvoří  kopii týmu včetně všech jeho hráčů.
+     * Slouží k tomu, aby se statistiky ze zápasu nepřepisovaly do evidence týmů.
+     * @param original team
+     * @return Team
+     */
     private Team copy(Team original) {
         Team c = new Team(original.getName());
         List<Player> players = original.getPlayers();
