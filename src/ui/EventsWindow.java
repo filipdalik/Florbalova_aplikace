@@ -39,7 +39,7 @@ public class EventsWindow extends JFrame {
         scrollPane.setBorder(BorderFactory.createLineBorder(new Color(234, 141, 0), 2));
         getContentPane().setBackground(new Color(43, 42, 42));
 
-        add(new JScrollPane(area));
+        add(scrollPane);
 
         setVisible(true);
     }

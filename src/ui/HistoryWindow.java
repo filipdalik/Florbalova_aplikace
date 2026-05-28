@@ -7,8 +7,16 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * Tato třída reprezentuje okno (JFrame) zobrazující historické záznamy odehraných zápasů.
+ * Načítá data ze souboru "history.txt" a na okně jsou viditelné v textovém způsobu.
+ */
 public class HistoryWindow extends JFrame {
 
+    /**
+     * Vytvoří a zobrazuje okno s historií zápasů a načítá data ze souboru "history.txt".
+     * Pokud by soubor neexistoval, vyhodí výjimku.
+     */
     public HistoryWindow() {
             setTitle("Match History");
             setSize(700, 550);
