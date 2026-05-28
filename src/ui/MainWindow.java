@@ -7,6 +7,11 @@ import model.Team;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Tato třída reprezentuje hlavní okno (JFrame) ve kterém se zobrazuje hlavní dění zápasu.
+ * Tato třída umí běžet na svém vlákně.
+ * Obsahuje ovládací tlačítka pro góly, tresty a události.
+ */
 public class MainWindow extends JFrame implements Runnable{
 
     private JLabel scoreLabel;
@@ -25,6 +30,10 @@ public class MainWindow extends JFrame implements Runnable{
     private Match match;
     private JButton stopButton;
 
+    /**
+     * Vytvoří hlavní okno zápasu a přidává všechna tlačítka.
+     * @param match
+     */
     public MainWindow(Match match) {
         this.match = match;
 
@@ -338,6 +347,10 @@ public class MainWindow extends JFrame implements Runnable{
         setVisible(true);
     }
 
+    /**
+     * Metoda run(), která reprezentuje čas zápasu a ubírá každou sekundu čas o jednu sekundu.
+     * Vždy přepisuje tlačítko po zastavení času.
+     */
     @Override
     public void run() {
         while (running) {
@@ -369,6 +382,9 @@ public class MainWindow extends JFrame implements Runnable{
         }
     }
 
+    /**
+     * Tato metoda přepisuje aktuální stav a přepisuje aktivní tresty, pokud již tresst skončí odebere ho.
+     */
     private void updateUIData() {
         timeLabel.setText(String.format("%02d:%02d", match.getMinutes(), match.getSeconds()));
         scoreLabel.setText(match.getScore1() + " : " + match.getScore2());
@@ -389,6 +405,9 @@ public class MainWindow extends JFrame implements Runnable{
         }
     }
 
+    /**
+     * Tato metoda zastavuje čas pokud je konec třetiny a pokud počet žřetin méně než 3, tak ji přepne na další a informuje o tom uživatele.
+     */
     private void stopMatch() {
         running = false;
         if (match.getPeriod() < 3){
@@ -399,6 +418,11 @@ public class MainWindow extends JFrame implements Runnable{
             handleFinalEnd();
         }
     }
+
+    /**
+     * Tato metoda zpracuje konec zápasu po 3. třetině aa uloží zápas do souboru s historií.
+     * Upozorní o to muživatele a nabídne mu se vrátit na uvítávající okno a začít nový zápas.
+     */
     private void handleFinalEnd() {
         match.saveToHistory();
         String text = "The match has ended! \n Score: " + match.getScore1() + " : " + match.getScore2() + "\n You can see this data in history.";
