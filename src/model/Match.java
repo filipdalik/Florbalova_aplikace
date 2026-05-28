@@ -5,6 +5,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Reprezentuje průběh florbalového zápasu mezi dvěma týmy.
+ */
 public class Match {
     private Team team1;
     private Team team2;
@@ -16,6 +19,9 @@ public class Match {
     private int period;
     private final int periodTime = 20;
 
+    /**
+     * Vytvoří novou instanci zápasu mezi dvěma zadanými týmy.
+     */
     public Match(Team team1, Team team2) {
         this.team1 = team1;
         this.team2 = team2;
@@ -27,6 +33,10 @@ public class Match {
         addEvent("The match was started: " + team1.getName() + " vs " + team2.getName());
     }
 
+    /**
+     * Posune čas zápasu o jednu sekundu dopředu a zkontroluje konec třetiny.
+     * @return false/true.
+     */
     public boolean tick() {
         seconds++;
         if (seconds == 60) {
@@ -43,6 +53,9 @@ public class Match {
         return false;
     }
 
+    /**
+     * Přepne zápas do následující třetiny a resetuje časomíru pro novou třetinu.
+     */
     public void nextPeriod() {
         period++;
         minutes = 0;
@@ -50,6 +63,10 @@ public class Match {
         addEvent("The " + period + ". period has begun.");
     }
 
+    /**
+     * Zaznamená vstřelený gól do statistik zápasu a připíše body hráči i s asistencí a hned napíše novou poznámku.
+     * @return false/true.
+     */
     public boolean addGoal(Team team, Player goal, Player assist){
         if (goal == null){
             return false;
@@ -75,11 +92,17 @@ public class Match {
         return true;
     }
 
+    /**
+     * Přidá textovou poznámku do seznamu poznámek o zápase.
+     */
     public void addEvent(String text) {
         String time = getMinutes() + ":" + String.format("%02d", getSeconds());
         events.add(new Event(time, text));
     }
 
+    /**
+     * Tato metoda uloží kompletní přehled o zápase do souboru "history.txt".
+     */
     public void saveToHistory() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("history.txt", true))) {
             bw.write("=== Match: " + team1.getName() + " vs " + team2.getName() + " ===");
