@@ -6,10 +6,18 @@ import model.TeamManager;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Tato třída reprezentuje okno (JFrame) ve kterém se odehrává nastavení.
+ * Umožňuje uživateli vytvářet nové týmy a upravovat hráče v týmech.
+ */
 public class SettingsWindow extends JFrame {
 
     private TeamManager manager = new TeamManager();
 
+    /**
+     * Vytvoří a zobrazí okno nastavení.
+     * Inicializuje tlačítka a propojení s ostatními třídami.
+     */
     public SettingsWindow() {
         setTitle("Settings");
         setSize(500, 400);
@@ -80,6 +88,11 @@ public class SettingsWindow extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Metoda pro upravení stylu tlačítek - nastavení stylu písma, barvy a velikosti.
+     * @param button
+     * @param backgroundColor
+     */
     private void styleButton(JButton button, Color backgroundColor) {
         button.setFocusPainted(false);
         button.setForeground(Color.WHITE);
