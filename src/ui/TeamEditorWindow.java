@@ -6,6 +6,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Tato třída reprezentuje okno (JFrame) sloužící jako editor daného týmu.
+ * Zobrazuje seznam všech hráčů daného týmu v listu¨a umožňuje přidávat/odebírat nové hráče.
+ * Odebírání je řešeno pomocí dvojkliku na vybraného hráče.
+ */
 public class TeamEditorWindow extends JFrame {
 
     private Team team;
@@ -14,6 +19,12 @@ public class TeamEditorWindow extends JFrame {
     private DefaultListModel<Player> model = new DefaultListModel<>();
     private JList<Player> list = new JList<>(model);
 
+    /**
+     * Tato metoda zobrazí okno editoru pro vybraný tým.
+     * Inicializuje tlačítka pro přidání hráčů a práci s tím je odebírat pomocí dvojkliku.
+     * @param manager
+     * @param team
+     */
     public TeamEditorWindow(TeamManager manager, Team team) {
         this.manager = manager;
         this.team = team;
@@ -70,6 +81,10 @@ public class TeamEditorWindow extends JFrame {
 
         setVisible(true);
     }
+
+    /**
+     * Pomocná metoda, která vyčistí model a znovu do něj nahraje všechny hráče k editování týmu.
+     */
     private void load() {
         model.clear();
         List<Player> players = team.getPlayers();
