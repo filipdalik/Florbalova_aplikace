@@ -31,10 +31,6 @@ public class Event {
         return text;
     }
 
-    /**
-     * Vrátí text, ve kterém je vše potřebné pro danou událost.
-     * @return String text.
-     */
     @Override
     public String toString() {
         return time + " -> " + text;
