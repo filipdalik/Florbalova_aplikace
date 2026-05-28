@@ -5,7 +5,15 @@ import model.Match;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Tato třída reprezentuje okno (JFrame) zobrazující přehled všech událostí/poznámek v zápase.
+ */
 public class EventsWindow extends JFrame {
+
+    /**
+     * Konstruktor vytvoří a zobrazí okno s přehledem událostí pro daný zápas.
+     * @param match
+     */
     public EventsWindow(Match match) {
         setTitle("EVENT");
         setSize(550, 1000);
