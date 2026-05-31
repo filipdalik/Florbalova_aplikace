@@ -65,7 +65,7 @@ public class HistoryWindow extends JFrame {
             mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
 
-            File file = new File("history.txt");
+            File file = new File("src/resources/history.txt");
             if (!file.exists()) {
                 historyArea.setText("No history found yet.\nMatches will appear here after they are completed.");
             } else {

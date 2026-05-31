@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class TeamManager {
 
     private ArrayList<Team> teams;
-    private final String file = "teams.dat";
+    private final String file = "src/resources/teams.dat";
 
     /**
      * Vytvoří novou instanci správce týmů.
